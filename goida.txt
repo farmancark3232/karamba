@@ -1,0 +1,3 @@
+  ethernet:
+    status:
+    goida
