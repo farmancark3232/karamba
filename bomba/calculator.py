@@ -1,22 +1,23 @@
-while True:
-    num1 = float(input("Введите первое число: "))
-    operation = input("Введите операцию (+, -, *, /): ")
-    num2 = float(input("Введите второе число: "))
+from flask import Flask, request
 
-    if operation == "+":
-        print("Результат:", num1 + num2)
-    elif operation == "-":
-        print("Результат:", num1 - num2)
-    elif operation == "*":
-        print("Результат:", num1 * num2)
-    elif operation == "/":
-        if num2 != 0:
-            print("Результат:", num1 / num2)
-        else:
-            print("Ошибка: деление на ноль")
+app = Flask(__name__)
+
+@app.route("/calc")
+def calc():
+    a = float(request.args.get("a"))
+    b = float(request.args.get("b"))
+    op = request.args.get("op")
+
+    if op == "+":
+        return {"result": a + b}
+    elif op == "-":
+        return {"result": a - b}
+    elif op == "*":
+        return {"result": a * b}
+    elif op == "/":
+        return {"result": a / b if b != 0 else "error: division by zero"}
     else:
-        print("Неизвестная операция")
+        return {"error": "unknown operation"}
 
-    again = input("Еще раз? (да/нет): ")
-    if again.lower() != "да":
-        break
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
